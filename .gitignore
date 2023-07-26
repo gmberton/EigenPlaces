@@ -1,0 +1,7 @@
+.spyproject
+.idea
+__pycache__
+logs
+cache
+jobs
+
