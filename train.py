@@ -14,7 +14,7 @@ import parser
 import commons
 import cosface_loss
 import augmentations
-from eigenplace_model import eigenplace_network
+from eigenplaces_model import eigenplaces_network
 from datasets.test_dataset import TestDataset
 from datasets.eigenplaces_dataset import EigenPlacesDataset
 
@@ -30,7 +30,7 @@ logging.info(f"Arguments: {args}")
 logging.info(f"The outputs are being saved in {output_folder}")
 
 #### Model
-model = eigenplace_network.GeoLocalizationNet_(args.backbone, args.fc_output_dim)
+model = eigenplaces_network.GeoLocalizationNet_(args.backbone, args.fc_output_dim)
 
 logging.info(f"There are {torch.cuda.device_count()} GPUs and {multiprocessing.cpu_count()} CPUs.")
 
