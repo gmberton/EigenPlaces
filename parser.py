@@ -7,7 +7,7 @@ def parse_arguments(is_training: bool = True):
     # CosPlace Groups parameters
     parser.add_argument("--M", type=int, default=15, help="_")
     parser.add_argument("--N", type=int, default=3, help="_")
-    parser.add_argument("--conv_dist", type=int, default=10, help="_")  # done GS
+    parser.add_argument("--focal_dist", type=int, default=10, help="_")  # done GS
     parser.add_argument("--min_eigen_ratio", type=float, default=1, help="_")
     parser.add_argument("--s", type=float, default=100, help="_")
     parser.add_argument("--m", type=float, default=0.4, help="_")

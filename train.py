@@ -47,7 +47,7 @@ model_optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
 #### Datasets
 groups = [EigenPlacesDataset(
-        args.train_dataset_folder, M=args.M, N=args.N, conv_dist=args.conv_dist,
+        args.train_dataset_folder, M=args.M, N=args.N, focal_dist=args.focal_dist,
         current_group=n//2, min_images_per_class=args.min_images_per_class, 
         angle=[0, 90][n % 2], visualize_classes=args.visualize_classes)
     for n in range(args.groups_num * 2)
