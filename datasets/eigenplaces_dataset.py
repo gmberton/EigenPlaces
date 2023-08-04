@@ -9,7 +9,7 @@ import logging
 import numpy as np
 from PIL import Image
 from PIL import ImageFile
-import torchvision.transforms as T
+import torchvision.transforms as tfm
 from collections import defaultdict
 
 from datasets.map_utils import create_map
@@ -20,11 +20,11 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 PANO_WIDTH = int(512*6.5)
 
 
-def get_angle(conv_point, obs_point):
+def get_angle(focal_point, obs_point):
     obs_e, obs_n = float(obs_point[0]), float(obs_point[1])
-    conv_e, conv_n = conv_point
-    side1 = conv_e - obs_e
-    side2 = conv_n - obs_n
+    focal_e, focal_n = focal_point
+    side1 = focal_e - obs_e
+    side2 = focal_n - obs_n
     angle = - math.atan2(side1, side2) / math.pi * 90 * 2
     return angle
 
@@ -33,40 +33,32 @@ def get_eigen_things(utm_coords):
     mu = utm_coords.mean(0)
     norm_data = utm_coords - mu
     eigenvectors, eigenvalues, v = np.linalg.svd(norm_data.T, full_matrices=False)
-    projected_data = np.dot(utm_coords, eigenvectors)
-    sigma = projected_data.std(0).mean()
-    return eigenvectors, eigenvalues, mu, sigma
+    return eigenvectors, eigenvalues, mu
 
 
 def rotate_2d_vector(vector, angle):
     assert vector.shape == (2,)
     theta = np.deg2rad(angle)
     rot_mat = np.array([[np.cos(theta), -np.sin(theta)],
-                       [np.sin(theta), np.cos(theta)]])
+                        [np.sin(theta), np.cos(theta)]])
     rotated_point = np.dot(rot_mat, vector)
     return rotated_point
 
 
-def get_convergence_point(utm_coords, meters_from_center=20, angle=0):
-    """Return the convergence point from a set of utm coords.
-    Also return the eigen_ratio, which is the ratio between the largest and
-    smallest eigenvalue. An eigen_ratio > 2 means that the coords are well
-    aligned (likely in a straight road).
-    """
+def get_focal_point(utm_coords, meters_from_center=20, angle=0):
+    """Return the focal point from a set of utm coords"""
     B, D = utm_coords.shape
     assert D == 2
-    eigenvectors, eigenvalues, mu, sigma = get_eigen_things(utm_coords)
+    eigenvectors, eigenvalues, mu = get_eigen_things(utm_coords)
 
     direction = rotate_2d_vector(eigenvectors[1], angle)
-    convergence_point = mu + direction * meters_from_center
-
-    eigen_ratio = max(eigenvalues) / (min(eigenvalues) + 1e-6)
-    return convergence_point, eigen_ratio
+    focal_point = mu + direction * meters_from_center
+    return focal_point
 
 
 class EigenPlacesDataset(torch.utils.data.Dataset):
     def __init__(self, dataset_folder,
-                 M=20, N=5, conv_dist=10, current_group=0, 
+                 M=20, N=5, focal_dist=10, current_group=0, 
                  min_images_per_class=10, angle=0, visualize_classes=0):
         """
         Parameters (please check our paper for a clearer explanation of the parameters).
@@ -74,21 +66,22 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
         dataset_folder : str, the path of the folder with the train images.
         M : int, the length of the side of each cell in meters.
         N : int, distance (M-wise) between two classes of the same group.
-        conv_dist : int, distance (M-wise) between the center of the class and
-            the convergence point. The center of the class is computed as the
+        focal_dist : int, distance (in meters) between the center of the class and
+            the focal point. The center of the class is computed as the
             mean of the positions of the images within the class.
-        min_eigen_ratio : int, within a class if the ratio between the bigger
-            eigenvalue and the smaller eigenvalue (here called eigen_ratio) is
-            smaller than min_eigen_ratio, the class is discarded. Low values of
-            eigen_ratio happen in sparse classes (e.g. in a square), high
-            values in linear classes (e.g. images from a straight road).
         current_group : int, which one of the groups to consider.
         min_images_per_class : int, minimum number of image in a class.
+        angle : int, the angle formed between the line of the first principal
+            component, and the line that connects the center of gravity of the
+            images to the focal point.
+        visualize_classes : int, the number of classes for which to create
+            visualizations. Visualizations of a class consists in its map and
+            the images belonging to it.
         """
         super().__init__()
         self.M = M
         self.N = N
-        self.conv_dist = conv_dist
+        self.focal_dist = focal_dist
         self.current_group = current_group
         self.dataset_folder = dataset_folder
         
@@ -109,15 +102,14 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
         self.classes_ids = classes_per_group[current_group]
         
         new_classes_ids = []
-        self.conv_point_per_class = {}
+        self.focal_point_per_class = {}
         for class_id in self.classes_ids:
             paths = self.images_per_class[class_id]
             u_coords = np.array([p.split("@")[1:3] for p in paths]).astype(float)
                         
-            convergence_point, eigen_ratio = get_convergence_point(u_coords, conv_dist,
-                                                                   angle=angle)
+            focal_point = get_focal_point(u_coords, focal_dist, angle=angle)
             new_classes_ids.append(class_id)
-            self.conv_point_per_class[class_id] = convergence_point
+            self.focal_point_per_class[class_id] = focal_point
 
         self.classes_ids = new_classes_ids
 
@@ -125,8 +117,8 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
         for class_num in range(visualize_classes):
             random_class_id = random.choice(self.classes_ids)
             paths = self.images_per_class[random_class_id]
-            convergence_point = self.conv_point_per_class[random_class_id]
-            conv_point_lat_lon = np.array(utm.to_latlon(convergence_point[0], convergence_point[1], 10, 'S'))
+            focal_point = self.focal_point_per_class[random_class_id]
+            focal_point_lat_lon = np.array(utm.to_latlon(focal_point[0], focal_point[1], 10, 'S'))
             lats_lons = np.array([p.split("@")[5:7] for p in paths]).astype(float)
             lats_lons += (np.random.randn(*lats_lons.shape) / 500000)  # Add a little noise to avoid overlapping
 
@@ -134,9 +126,9 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
             cell_utms = (min_e, min_n), (min_e, min_n + M), (min_e + M, min_n + M), (min_e + M, min_n)
             cell_corners = np.array([utm.to_latlon(*u, 10, 'S') for u in cell_utms])
 
-            img = create_map([lats_lons, lats_lons.mean(0).reshape(1, 2), conv_point_lat_lon.reshape(1, 2), cell_corners],
+            img = create_map([lats_lons, lats_lons.mean(0).reshape(1, 2), focal_point_lat_lon.reshape(1, 2), cell_corners],
                               colors=["r", "b", "g", "orange"],
-                              legend_names=["images", "mean", "conv point", f"cell ({M} m)"],
+                              legend_names=["images", "mean", "focal point", f"cell ({M} m)"],
                               dot_sizes=[10, 100, 100, 100])
             output_folder = os.path.dirname(logging.getLoggerClass().root.handlers[0].baseFilename)
             folder = f"{output_folder}/visualizations/group{current_group}_{class_num}_{random_class_id}"
@@ -144,32 +136,39 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
             imageio.imsave(f"{folder}/@00_map.jpg", img)
             images_paths = self.images_per_class[random_class_id]
             for path in images_paths:
-                crop = self.get_crop(self.dataset_folder + "/" + path, convergence_point)
-                crop = T.functional.to_pil_image(crop)
+                crop = self.get_crop(self.dataset_folder + "/" + path, focal_point)
+                crop = tfm.functional.to_pil_image(crop)
                 crop.save(f"{folder}/{os.path.basename(path)}")
 
     @staticmethod
-    def get_crop(pano_path, convergence_point):
+    def get_crop(pano_path, focal_point):
         obs_point = pano_path.split("@")[1:3]
-        angle = - get_angle(convergence_point, obs_point) % 360
+        angle = - get_angle(focal_point, obs_point) % 360
         crop_offset = int((angle / 360 * PANO_WIDTH) % PANO_WIDTH)
         yaw = int(pano_path.split("@")[9])
         north_yaw_in_degrees = (180-yaw) % 360
         yaw_offset = int((north_yaw_in_degrees / 360) * PANO_WIDTH)
         offset = (yaw_offset + crop_offset - 256) % PANO_WIDTH
-        pano_tensor = T.functional.to_tensor(Image.open(pano_path))
-        if pano_tensor.shape[2] <= offset + 512:
-            pano_tensor = torch.cat([pano_tensor, pano_tensor], 2)
-        crop = pano_tensor[:, :, offset : offset+512]
+        pano_pil = Image.open(pano_path)
+        if offset + 512 <= PANO_WIDTH:
+            pil_crop = pano_pil.crop((offset, 0, offset + 512, 512))
+        else:
+            crop1 = pano_pil.crop((offset, 0, PANO_WIDTH, 512))
+            crop2 = pano_pil.crop((0, 0, 512 - (PANO_WIDTH - offset), 512))
+            pil_crop = Image.new('RGB', (512, 512))
+            pil_crop.paste(crop1, (0, 0))
+            pil_crop.paste(crop2, (crop1.size[0], 0))
+        crop = tfm.functional.to_tensor(pil_crop)
+        
         return crop
 
     def __getitem__(self, class_num):
         # This function takes as input the class_num instead of the index of
         # the image. This way each class is equally represented during training.
         class_id = self.classes_ids[class_num]
-        convergence_point = self.conv_point_per_class[class_id]
+        focal_point = self.focal_point_per_class[class_id]
         pano_path = self.dataset_folder + "/" + random.choice(self.images_per_class[class_id])
-        crop = self.get_crop(pano_path, convergence_point)
+        crop = self.get_crop(pano_path, focal_point)
         return crop, class_num, pano_path
     
     def get_images_num(self):
