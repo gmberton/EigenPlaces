@@ -23,7 +23,7 @@ def parse_arguments(is_training: bool = True):
     # Training parameters
     parser.add_argument("--batch_size", type=int, default=32, help="_")
     parser.add_argument("--epochs_num", type=int, default=40, help="_")
-    parser.add_argument("-ipe", "--iterations_per_epoch", type=int, default=5000, help="_")
+    parser.add_argument("--iterations_per_epoch", type=int, default=5000, help="_")
     parser.add_argument("--lr", type=float, default=0.00001, help="_")
     parser.add_argument("--classifiers_lr", type=float, default=0.01, help="_")
     # Data augmentation

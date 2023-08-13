@@ -161,7 +161,7 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
     
     #### Evaluation
     recalls, recalls_str = test.test(args, val_ds, model, batchify=True)
-    logging.info(f"Epoch {epoch_num:02d} in {str(datetime.now() - epoch_start_time)[:-7]}, {val_ds}: {recalls_str[:20]}")
+    logging.info(f"Epoch {epoch_num:02d} in {str(datetime.now() - epoch_start_time)[:-7]}, {val_ds}: {recalls_str}")
     is_best = recalls[0] > best_val_recall1
     best_val_recall1 = max(recalls[0], best_val_recall1)
     # Save checkpoint, which contains all training parameters
@@ -174,7 +174,6 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
         "best_val_recall1": best_val_recall1
     }, is_best, output_folder)
 
-
 logging.info(f"Trained for {epoch_num+1:02d} epochs, in total in {str(datetime.now() - start_time)[:-7]}")
 
 #### Test best model_ on test set v1
@@ -183,13 +182,8 @@ model.load_state_dict(best_model_state_dict)
 
 test_ds = TestDataset(f"{args.test_dataset_folder}")
 recalls, recalls_str = test.test(args, test_ds, model)
-logging.info(f"{test_ds}: {recalls_str[:20]}")
-
-# test_ds = TestDataset(args.test_set_folder, queries_folder="queries_v1",
-#                       positive_dist_threshold=args.positive_dist_threshold)
-# logging.info(f"Test set: {test_ds}")
-# logging.info(f"Now testing on the test set: {test_ds}")
-# recalls, recalls_str = test.test(args, test_ds, model)
-# logging.info(f"{test_ds}: {recalls_str}")
+logging.info(f"{test_ds}: {recalls_str}")
 
 logging.info("Experiment finished (without any errors)")
+
+
