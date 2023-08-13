@@ -2,17 +2,18 @@
 import argparse
 
 
-def parse_arguments(is_training: bool = True):
+def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     # CosPlace Groups parameters
     parser.add_argument("--M", type=int, default=15, help="_")
     parser.add_argument("--N", type=int, default=3, help="_")
     parser.add_argument("--focal_dist", type=int, default=10, help="_")  # done GS
-    parser.add_argument("--min_eigen_ratio", type=float, default=1, help="_")
     parser.add_argument("--s", type=float, default=100, help="_")
     parser.add_argument("--m", type=float, default=0.4, help="_")
-    
-    parser.add_argument("--groups_num", type=int, default=0, help="_")
+    parser.add_argument("--lambda_lat", type=float, default=1., help="_")
+    parser.add_argument("--lambda_front", type=float, default=1., help="_")
+    parser.add_argument("--groups_num", type=int, default=0,
+                        help="If set to 0 use N*N groups")
 
     parser.add_argument("--min_images_per_class", type=int, default=5, help="_")
     # Model parameters

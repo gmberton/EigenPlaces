@@ -138,6 +138,10 @@ for epoch_num in range(start_epoch_num, args.epochs_num):
                 descriptors = model(images)
                 output = classifiers[current_dataset_num + i](descriptors, targets)
                 loss = criterion(output, targets)
+                if i == 0:
+                    loss *= args.lambda_lat
+                else:
+                    loss *= args.lambda_front
             del images, output
             scaler.scale(loss).backward()
             scaler.step(classifiers_optimizers[current_dataset_num + i])
