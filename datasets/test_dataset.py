@@ -24,8 +24,8 @@ class TestDataset(data.Dataset):
         """
         super().__init__()
         
-        self.database_folder = dataset_folder + "/" + database_folder
-        self.queries_folder = dataset_folder + "/" + queries_folder
+        self.database_folder = os.path.join(dataset_folder, database_folder)
+        self.queries_folder = os.path.join(dataset_folder, queries_folder)
         self.database_paths = dataset_utils.read_images_paths(self.database_folder, get_abs_path=True)
         self.queries_paths = dataset_utils.read_images_paths(self.queries_folder, get_abs_path=True)
         
@@ -43,8 +43,7 @@ class TestDataset(data.Dataset):
             self.queries_utms, radius=positive_dist_threshold, return_distance=False
         )
         
-        self.images_paths = [p for p in self.database_paths]
-        self.images_paths += [p for p in self.queries_paths]
+        self.images_paths = self.database_paths + self.queries_paths
         
         self.database_num = len(self.database_paths)
         self.queries_num = len(self.queries_paths)

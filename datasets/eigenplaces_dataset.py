@@ -126,15 +126,21 @@ class EigenPlacesDataset(torch.utils.data.Dataset):
             cell_utms = (min_e, min_n), (min_e, min_n + M), (min_e + M, min_n + M), (min_e + M, min_n)
             cell_corners = np.array([utm.to_latlon(*u, 10, 'S') for u in cell_utms])
 
-            img = create_map([lats_lons, lats_lons.mean(0).reshape(1, 2), focal_point_lat_lon.reshape(1, 2), cell_corners],
-                              colors=["r", "b", "g", "orange"],
-                              legend_names=["images position", "center of mass",
-                                            "focal point", f"cell corners ({M} meters)"],
-                              dot_sizes=[10, 100, 100, 100])
             output_folder = os.path.dirname(logging.getLoggerClass().root.handlers[0].baseFilename)
             folder = f"{output_folder}/visualizations/group{current_group}_{class_num}_{random_class_id}"
             os.makedirs(folder)
-            imageio.imsave(f"{folder}/@00_map.jpg", img)
+            try:
+                img_map = create_map([lats_lons, lats_lons.mean(0).reshape(1, 2), focal_point_lat_lon.reshape(1, 2), cell_corners],
+                                  colors=["r", "b", "g", "orange"],
+                                  legend_names=["images position", "center of mass",
+                                                "focal point", f"cell corners ({M} meters)"],
+                                  dot_sizes=[10, 100, 100, 100])
+                imageio.imsave(f"{folder}/@00_map.jpg", img_map)
+            except RuntimeError:
+                # Sometimes there are errors due to staticmap (komoot) servers
+                logging.warn("There was some problem while downloading the map of the class for visualization. "
+                             "This will not influence training.")
+            
             images_paths = self.images_per_class[random_class_id]
             for path in images_paths:
                 crop = self.get_crop(self.dataset_folder + "/" + path, focal_point)

@@ -49,7 +49,7 @@ def parse_arguments():
                         choices=["cuda", "cpu"], help="_")
     parser.add_argument("--seed", type=int, default=0, help="_")
     parser.add_argument("--num_workers", type=int, default=8, help="_")
-    parser.add_argument("--visualize_classes", type=int, default=2,
+    parser.add_argument("--visualize_classes", type=int, default=0,
                         help="Save map visualizations for X classes in the save_dir")
     
     # Paths parameters
