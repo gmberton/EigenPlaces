@@ -1,6 +1,7 @@
 
 import cv2
 import math
+import imageio
 import numpy as np
 import geopy.distance
 import matplotlib.pyplot as plt
@@ -102,31 +103,23 @@ def create_map(coordinates, colors=None, dot_sizes=None, legend_names=None, map_
     final_map = map_img * mask + plot_img * (~mask)
     return final_map
 
-# import utm
-# def to_ll(utm_east, utm_north):
-#     # print(utm_east, utm_north)
-#     ret = utm.to_latlon(utm_east, utm_north, 10, 'S')
-#     # print(ret)
-#     return ret
 
-# u_coords = np.array([[ 553006.65, 4177300.44],
-#                     [ 553007.53, 4177300.45],
-#                     [ 553008.39, 4177303.78],
-#                     [ 553008.39, 4177304.89],
-#                     [ 553008.41, 4177301.57]])
-
-# convergence_point = np.array([ 553000.65, 4177300.44])
-# conv_point_lat_lon = np.array(utm.to_latlon(convergence_point[0], convergence_point[1], 10, 'S')).reshape(1, 2)
-
-# lats_lons = np.array([to_ll(e, n) for e, n in u_coords])
-
-# img = _create_map([lats_lons, conv_point_lat_lon], colors=["r", "g"])
-
-# import g_util as g
-# g.show_image(img)
-
-
-
-
-
+if __name__ == "__main__":
+    # Create a map containing major cities of Italy, Germany and France
+    coordinates = [
+        np.array([[41.8931, 12.4828], [45.4669, 9.1900], [40.8333, 14.2500]]),
+        np.array([[52.5200, 13.4050], [48.7775, 9.1800], [48.1375, 11.5750]]),
+        np.array([[48.8567, 2.3522], [43.2964, 5.3700], [45.7600, 4.8400]])
+    ]
+    map_img = create_map(
+        coordinates,
+        colors=["green", "black", "blue"],
+        dot_sizes=[1000, 1000, 1000],
+        legend_names=[
+            "Main Italian Cities",
+            "Main German Cities",
+            "Main French Cities",
+        ])
+    
+    imageio.imsave("cities.png", map_img)
 
