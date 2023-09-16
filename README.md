@@ -57,7 +57,7 @@ Here is the bibtex to cite our paper
 ```
 @InProceedings{Berton_CVPR_2022_EigenPlaces,
     author    = {Berton, Gabriele and Trivigno, Gabriele and Masone, Carlo and Caputo, Barbara},
-    title     = {eigenplaces: Training Viewpoint Robust Models for Visual Place Recognition},
+    title     = {EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition},
     booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
     year      = {2023},
 }
