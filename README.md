@@ -4,6 +4,8 @@
 This is the official pyTorch implementation of the ICCV 2023 paper "EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition".
 The paper presents a new training method which aims at providing samples from multiple viewpoints to the model, to make it robust to camera viewpoint changes. It achieves SOTA on any dataset with large viewpoint shifts between query images and database.
 
+For the paper we also released a codebase to reproduce results with all other baselines (NetVLAD, SFRS, Conv-AP, CosPlace, MixVPR) in order to have a standardized and fair evaluation framework at [https://github.com/gmberton/VPR-methods-evaluation](https://github.com/gmberton/VPR-methods-evaluation)
+
 [[ArXiv](https://arxiv.org/abs/2308.10832)] [[BibTex](https://github.com/gmberton/EigenPlaces#cite)]
 
 <p float="left">
