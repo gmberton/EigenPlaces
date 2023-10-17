@@ -6,7 +6,7 @@ The paper presents a new training method which aims at providing samples from mu
 
 For the paper we also released a codebase to reproduce results with all other baselines (NetVLAD, SFRS, Conv-AP, CosPlace, MixVPR) in order to have a standardized and fair evaluation framework at [https://github.com/gmberton/VPR-methods-evaluation](https://github.com/gmberton/VPR-methods-evaluation)
 
-[[ArXiv](https://arxiv.org/abs/2308.10832)] [[BibTex](https://github.com/gmberton/EigenPlaces#cite)]
+[[ICCV 2023 Open Access](https://openaccess.thecvf.com/content/ICCV2023/html/Berton_EigenPlaces_Training_Viewpoint_Robust_Models_for_Visual_Place_Recognition_ICCV_2023_paper.html)] [[ArXiv](https://arxiv.org/abs/2308.10832)] [[BibTex](https://github.com/gmberton/EigenPlaces#cite)]
 
 <p float="left">
   <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/teaser.jpg" height="150" />
@@ -59,8 +59,10 @@ Here is the bibtex to cite our paper
 ```
 @inproceedings{Berton_2023_EigenPlaces,
   title={EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition},
-  author={Berton, Gabriele and Trivigno, Gabriele and Masone, Carlo and Caputo, Barbara},
-  booktitle={IEEE International Conference on Computer Vision (ICCV)},
+  author={Berton, Gabriele and Trivigno, Gabriele and Caputo, Barbara and Masone, Carlo},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
   year={2023},
+  month={October},
+  pages={11080-11090}
 }
 ```
