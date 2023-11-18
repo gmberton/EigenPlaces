@@ -69,9 +69,9 @@ gpu_augmentation = tfm.Compose([
 
 logging.info(f"Using {len(groups)} groups")
 logging.info(f"The {len(groups)} groups have respectively the following "
-             "number of classes {[len(g) for g in groups]}")
+             f"number of classes {[len(g) for g in groups]}")
 logging.info(f"The {len(groups)} groups have respectively the following "
-             "number of images {[g.get_images_num() for g in groups]}")
+             f"number of images {[g.get_images_num() for g in groups]}")
 
 logging.info(f"There are {len(groups[0])} classes for the first group, " +
              f"each epoch has {args.iterations_per_epoch} iterations " +
