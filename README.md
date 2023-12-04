@@ -55,6 +55,8 @@ import torch
 model = torch.hub.load("gmberton/eigenplaces", "get_trained_model", backbone="ResNet50", fc_output_dim=2048)
 ```
 
+Available trained models are ResNet18 (with output dim 256 or 512), ResNet50 (output dim 128, 256, 512 or 2048), ResNet101 (output dim 128, 256, 512 or 2048) and VGG16 (output dim 512).
+
 
 ## Acknowledgements
 Parts of this repo are inspired by the following repositories:
