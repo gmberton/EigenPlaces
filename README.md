@@ -41,11 +41,13 @@ To change the backbone or the output descriptors dimensionality simply run somet
 Run `$ python3 train.py -h` to have a look at all the hyperparameters that you can change. You will find all hyperparameters mentioned in the paper.
 
 ## Test
-You can test a trained model as such
+You can test one of our trained models as such (downloads the model from torch.hub)
 
-`$ python3 eval.py --backbone ResNet50 --fc_output_dim 128 --resume_model path/to/best_model.pth`
+`$ python3 eval.py --backbone ResNet50 --fc_output_dim 2048 --resume_model torchhub`
 
-You can download plenty of trained models below.
+or a model trained by you like this
+
+`$ python3 eval.py --backbone ResNet50 --fc_output_dim 2048 --resume_model path/to/best_model.pth`
 
 ## Trained Models
 
