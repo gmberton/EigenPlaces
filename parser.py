@@ -43,7 +43,8 @@ def parse_arguments():
     parser.add_argument("--resume_train", type=str, default=None,
                         help="path to checkpoint to resume, e.g. logs/.../last_checkpoint.pth")
     parser.add_argument("--resume_model", type=str, default=None,
-                        help="path to model_ to resume, e.g. logs/.../best_model.pth")
+                        help="path to model_ to resume, e.g. logs/.../best_model.pth. "
+                        "Use \"torchhub\" if you want to use one of our pretrained models")
     # Other parameters
     parser.add_argument("--device", type=str, default="cuda",
                         choices=["cuda", "cpu"], help="_")

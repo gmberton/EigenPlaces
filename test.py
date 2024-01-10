@@ -29,7 +29,7 @@ def test(args: Namespace, eval_ds: Dataset, model: torch.nn.Module, batchify : b
             descriptors = descriptors.cpu().numpy()
             all_descriptors[indices.numpy(), :] = descriptors
         
-        logging.debug("Extracting queries descriptors for evaluation/testing using batch size 1")
+        logging.debug("Extracting queries descriptors for evaluation/testing")
         if batchify:
             queries_infer_batch_size = args.infer_batch_size
         else:
