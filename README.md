@@ -11,10 +11,10 @@ For the paper we also released a codebase to reproduce results with all other ba
 Note that EigenPlaces is quite old. **🚀 Looking for SOTA Visual Place Recognition (VPR)? Check out [MegaLoc](https://github.com/gmberton/MegaLoc)**
 
 <p float="left">
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/teaser.jpg" height="150" />
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/eigen_map.jpg" height="150" /> 
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/lateral_loss.png" height="150" />
-  <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/frontal_loss.png" height="150" />
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/294eeca/assets/EigenPlaces/teaser.jpg" height="150" />
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/294eeca/assets/EigenPlaces/eigen_map.jpg" height="150" /> 
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/294eeca/assets/EigenPlaces/lateral_loss.png" height="150" />
+  <img src="https://github.com/gmberton/gmberton.github.io/blob/294eeca/assets/EigenPlaces/frontal_loss.png" height="150" />
 </p>
 
 
