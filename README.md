@@ -1,21 +1,14 @@
 
 # EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition
 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-amstertime)](https://paperswithcode.com/sota/visual-place-recognition-on-amstertime?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-eynsham)](https://paperswithcode.com/sota/visual-place-recognition-on-eynsham?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-pittsburgh-30k)](https://paperswithcode.com/sota/visual-place-recognition-on-pittsburgh-30k?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-san-francisco)](https://paperswithcode.com/sota/visual-place-recognition-on-san-francisco?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-sf-xl-test-v1)](https://paperswithcode.com/sota/visual-place-recognition-on-sf-xl-test-v1?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-tokyo247)](https://paperswithcode.com/sota/visual-place-recognition-on-tokyo247?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-pittsburgh-250k)](https://paperswithcode.com/sota/visual-place-recognition-on-pittsburgh-250k?p=eigenplaces-training-viewpoint-robust-models)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/eigenplaces-training-viewpoint-robust-models/visual-place-recognition-on-sf-xl-test-v2)](https://paperswithcode.com/sota/visual-place-recognition-on-sf-xl-test-v2?p=eigenplaces-training-viewpoint-robust-models)
-
 This is the official pyTorch implementation of the ICCV 2023 paper "EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition".
 The paper presents a new training method which aims at providing samples from multiple viewpoints to the model, to make it robust to camera viewpoint changes. It achieves SOTA on any dataset with large viewpoint shifts between query images and database.
 
 For the paper we also released a codebase to reproduce results with all other baselines (NetVLAD, SFRS, Conv-AP, CosPlace, MixVPR) in order to have a standardized and fair evaluation framework at [https://github.com/gmberton/VPR-methods-evaluation](https://github.com/gmberton/VPR-methods-evaluation)
 
 [[ICCV 2023 Open Access](https://openaccess.thecvf.com/content/ICCV2023/html/Berton_EigenPlaces_Training_Viewpoint_Robust_Models_for_Visual_Place_Recognition_ICCV_2023_paper.html)] [[ArXiv](https://arxiv.org/abs/2308.10832)] [[BibTex](https://github.com/gmberton/EigenPlaces#cite)]
+
+Note that EigenPlaces is quite old. **🚀 Looking for SOTA Visual Place Recognition (VPR)? Check out [MegaLoc](https://github.com/gmberton/MegaLoc)**
 
 <p float="left">
   <img src="https://github.com/gmberton/gmberton.github.io/blob/main/assets/EigenPlaces/teaser.jpg" height="150" />
