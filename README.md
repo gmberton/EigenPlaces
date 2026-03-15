@@ -62,13 +62,13 @@ Parts of this repo are inspired by the following repositories:
 
 ## Cite
 Here is the bibtex to cite our paper
-```
+```bibtex
 @inproceedings{Berton_2023_EigenPlaces,
-  title={EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition},
-  author={Berton, Gabriele and Trivigno, Gabriele and Caputo, Barbara and Masone, Carlo},
-  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-  year={2023},
-  month={October},
-  pages={11080-11090}
+    author    = {Berton, Gabriele and Trivigno, Gabriele and Caputo, Barbara and Masone, Carlo},
+    title     = {EigenPlaces: Training Viewpoint Robust Models for Visual Place Recognition},
+    booktitle = {IEEE/CVF International Conference on Computer Vision},
+    month     = {October},
+    year      = {2023},
+    pages     = {11080--11090}
 }
 ```
